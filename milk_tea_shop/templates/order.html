@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Đặt món - Milkea{% endblock %}
+{% block content %}
+<section class="container py-5">
+    <div class="row g-4 align-items-center">
+        <div class="col-md-5">
+            <img src="{{ url_for('static', filename='images/' + (product.image or 'logo.png')) }}" class="img-fluid rounded-4 shadow-sm" alt="{{ product.name }}">
+        </div>
+        <div class="col-md-7">
+            <h1 class="fw-bold">{{ product.name }}</h1>
+            <p class="text-muted">{{ product.description }}</p>
+            <p><strong>Size:</strong> {{ product.size }}</p>
+            <p><strong>Topping:</strong> {{ product.topping }}</p>
+            <h3 class="text-brown fw-bold">{{ "{:,.0f}".format(product.price).replace(',', '.') }}đ</h3>
+
+            <form method="POST" class="mt-4 order-box">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Họ tên người nhận</label>
+                        <input type="text" name="customer_name" class="form-control" placeholder="Nhập họ tên" value="{{ session.get('username') }}" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Số điện thoại</label>
+                        <input type="text" name="phone" class="form-control" placeholder="Nhập số điện thoại" required>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label fw-semibold">Địa chỉ nhận hàng</label>
+                        <input type="text" name="address" class="form-control" placeholder="Ví dụ: Thanh Xuân, Hà Nội" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Số lượng</label>
+                        <input type="number" name="quantity" min="1" max="99" value="1" class="form-control" required>
+                        <small class="text-muted">Tối đa 99 ly cho một món.</small>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Ghi chú</label>
+                        <input type="text" name="note" class="form-control" placeholder="Ít đá, ít đường...">
+                    </div>
+                </div>
+
+                <div class="alert alert-info mt-3 mb-3">
+                    Sau khi bấm đặt món, đơn sẽ tự lưu vào hệ thống và hiện trong tài khoản admin. Nếu muốn đặt nhiều món, hãy dùng Giỏ hàng.
+                </div>
+
+                <button type="submit" class="btn btn-brown">Xác nhận đặt món</button>
+                <a href="{{ url_for('main.menu') }}" class="btn btn-outline-brown">Quay lại menu</a>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

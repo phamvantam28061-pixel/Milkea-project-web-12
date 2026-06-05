@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block title %}Giỏ hàng - Milkea{% endblock %}
+{% block content %}
+<section class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="fw-bold mb-1">Giỏ hàng</h1>
+            <p class="text-muted mb-0">Thêm nhiều món, chỉnh số lượng từng món rồi đặt một lần.</p>
+        </div>
+        <a href="{{ url_for('main.menu') }}" class="btn btn-outline-brown">+ Thêm món khác</a>
+    </div>
+
+    {% if cart_items %}
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <div class="table-responsive shadow-sm rounded bg-white">
+                <table class="table align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Món</th>
+                            <th>Giá</th>
+                            <th style="width: 190px;">Số lượng</th>
+                            <th>Thành tiền</th>
+                            <th>Xóa</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in cart_items %}
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center gap-3">
+                                    <img src="{{ url_for('static', filename='images/' + (item.product.image or 'logo.png')) }}" class="table-img" alt="{{ item.product.name }}">
+                                    <div>
+                                        <div class="fw-semibold">{{ item.product.name }}</div>
+                                        <small class="text-muted">{{ item.product.category }}</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>{{ "{:,.0f}".format(item.product.price).replace(',', '.') }}đ</td>
+                            <td>
+                                <form method="POST" action="{{ url_for('main.update_cart', product_id=item.product.id) }}" class="d-flex gap-2">
+                                    <input type="number" name="quantity" min="1" max="99" value="{{ item.quantity }}" class="form-control form-control-sm" required>
+                                    <button class="btn btn-outline-brown btn-sm" type="submit">Sửa</button>
+                                </form>
+                                <small class="text-muted">Tối đa 99</small>
+                            </td>
+                            <td class="fw-bold text-brown">{{ "{:,.0f}".format(item.item_total).replace(',', '.') }}đ</td>
+                            <td>
+                                <form method="POST" action="{{ url_for('main.remove_from_cart', product_id=item.product.id) }}" onsubmit="return confirm('Xóa món này khỏi giỏ hàng?');">
+                                    <button class="btn btn-outline-danger btn-sm" type="submit">Xóa</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="cart-checkout-box shadow-sm">
+                <h4 class="fw-bold mb-3">Thông tin đặt hàng</h4>
+                <div class="d-flex justify-content-between border-bottom pb-3 mb-3">
+                    <span>Tổng tiền</span>
+                    <strong class="text-brown fs-5">{{ "{:,.0f}".format(total_price).replace(',', '.') }}đ</strong>
+                </div>
+
+                <form method="POST" action="{{ url_for('main.checkout_cart') }}">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Họ tên người nhận</label>
+                        <input type="text" name="customer_name" class="form-control" value="{{ session.get('username') }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Số điện thoại</label>
+                        <input type="text" name="phone" class="form-control" placeholder="Nhập số điện thoại" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Địa chỉ nhận hàng</label>
+                        <input type="text" name="address" class="form-control" placeholder="Ví dụ: Thanh Xuân, Hà Nội" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Ghi chú</label>
+                        <textarea name="note" class="form-control" rows="3" placeholder="Ít đá, ít đường..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-brown w-100">Đặt tất cả món trong giỏ</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="alert alert-warning text-center">
+        Giỏ hàng đang trống. Hãy quay lại menu để thêm món.
+    </div>
+    <div class="text-center">
+        <a href="{{ url_for('main.menu') }}" class="btn btn-brown">Về menu</a>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

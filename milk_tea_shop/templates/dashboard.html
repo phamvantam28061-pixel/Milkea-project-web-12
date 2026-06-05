@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Dashboard - Milkea{% endblock %}
+{% block content %}
+<section class="container py-5">
+    <h1 class="fw-bold mb-4"></h1>
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="stat-card shadow-sm">
+                <p class="text-muted mb-1">Tổng số món</p>
+                <h2 class="fw-bold mb-0">{{ product_count }}</h2>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stat-card shadow-sm">
+                <p class="text-muted mb-1">Tổng đơn hàng</p>
+                <h2 class="fw-bold mb-0">{{ order_count }}</h2>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stat-card shadow-sm">
+                <p class="text-muted mb-1">Doanh thu</p>
+                <h2 class="fw-bold mb-0">{{ "{:,.0f}".format(revenue).replace(',', '.') }}đ</h2>
+            </div>
+        </div>
+    </div>
+    <div class="mt-4 d-flex gap-2">
+        <a href="{{ url_for('main.admin_products') }}" class="btn btn-brown">Quản lý món</a>
+        <a href="{{ url_for('main.order_list') }}" class="btn btn-outline-brown">Xem đơn hàng</a>
+    </div>
+</section>
+{% endblock %}

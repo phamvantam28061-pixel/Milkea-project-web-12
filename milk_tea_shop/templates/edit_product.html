@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Sửa món - Milkea{% endblock %}
+{% block content %}
+<section class="container py-5">
+    <div class="auth-card mx-auto shadow-sm">
+        <h1 class="fw-bold mb-3">Sửa món</h1>
+        <form method="POST" enctype="multipart/form-data">
+            <div class="mb-3 text-center">
+                {% if product.image %}
+                <img src="{{ url_for('static', filename='images/' + product.image) }}" class="table-img" alt="{{ product.name }}">
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Tên món</label>
+                <input type="text" class="form-control" name="name" value="{{ product.name }}" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Loại món</label>
+                <select class="form-select" name="category">
+                    {% for c in categories %}
+                    <option {% if product.category == c %}selected{% endif %}>{{ c }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Size</label>
+                <input type="text" class="form-control" name="size" value="{{ product.size }}">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Topping</label>
+                <input type="text" class="form-control" name="topping" value="{{ product.topping }}">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Giá</label>
+                <input type="number" class="form-control" name="price" value="{{ product.price }}" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Mô tả</label>
+                <textarea class="form-control" name="description" rows="3">{{ product.description }}</textarea>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Đổi ảnh món</label>
+                <input type="file" class="form-control" name="image" accept="image/*">
+            </div>
+            <button type="submit" class="btn btn-brown w-100">Cập nhật</button>
+        </form>
+    </div>
+</section>
+{% endblock %}

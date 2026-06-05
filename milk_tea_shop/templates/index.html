@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Trang chủ - Milkea{% endblock %}
+
+{% block content %}
+<section class="hero-section">
+    <div class="container py-5">
+        <div class="row align-items-center min-vh-50">
+            <div class="col-lg-7">
+                <h1 class="display-5 fw-bold mb-3">Website quản lý menu và đơn hàng trà sữa</h1>
+                <p class="lead text-muted mb-4">
+                    Dự án Milkea hỗ trợ xem menu, tìm kiếm món, lọc danh mục và quản lý sản phẩm bằng Flask + SQLite.
+                </p>
+                <a href="{{ url_for('main.menu') }}" class="btn btn-brown btn-lg me-2">Xem menu</a>
+                <a href="{{ url_for('main.admin_products') }}" class="btn btn-outline-brown btn-lg">Quản lý món</a>
+            </div>
+            <div class="col-lg-5 text-center mt-4 mt-lg-0">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" class="hero-logo" alt="Milkea Logo">
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container py-5">
+    <div class="text-center mb-4">
+        <h2 class="fw-bold">Món nổi bật</h2>
+        <p class="text-muted">Dữ liệu mẫu được tự động thêm vào database khi chạy lần đầu.</p>
+    </div>
+
+    <div class="row g-4">
+        {% for product in featured_products %}
+        <div class="col-md-4">
+            <div class="card product-card h-100 shadow-sm">
+                <img src="{{ url_for('static', filename='images/' + (product.image or 'logo.png')) }}" class="card-img-top product-img" alt="{{ product.name }}">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold">{{ product.name }}</h5>
+                    <p class="text-muted small mb-2">{{ product.category }}</p>
+                    <p class="fw-bold text-brown">{{ "{:,.0f}".format(product.price).replace(',', '.') }}đ</p>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-12">
+            <div class="alert alert-info text-center">Chưa có sản phẩm nổi bật.</div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
