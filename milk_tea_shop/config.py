@@ -8,4 +8,4 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     UPLOAD_FOLDER = os.path.join(BASE_DIR, "static", "uploads")
     IMAGE_FOLDER = os.path.join(BASE_DIR, "static", "images")
-    ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif", "webp"
+    ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif", "webp"}
